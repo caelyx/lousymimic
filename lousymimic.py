@@ -5,6 +5,7 @@ import anydbm
 import argparse
 import cPickle
 
+
 ## Support functions ##
 
 def dict_add(d, index, item):
@@ -60,11 +61,11 @@ def ingest(fp_in, dict_out, delimiter="\n"):
 def express(d, count=5, delimiter="\n"):
   """Generates text from an existing db."""
   for i in xrange(count):
-    print delimiter,
     word = random.choice(cPickle.loads(d[delimiter]))
     while (word <> delimiter):
       print word,
       word = random.choice(cPickle.loads(d[word]))
+    print delimiter,
 
 
 
@@ -78,16 +79,16 @@ def main():
   parser.add_argument('-d', '--database', action='store', nargs=1, help='Database to use.')
   parser.add_argument('-s', '--source', action='store', nargs=1, help='Source text file to update with.')
   parser.add_argument('-n', '--number', action='store', nargs=1, help='Number of sentences/lines to express.')
-  #parser.add_argument('--sentences', action='store_true', help='Break content into sentences.')
-  #parser.add_argument('--lines', action='store_true', help='Break content into lines (default).')
+  parser.add_argument('--sentences', action='store_true', help='Break content into sentences.')
+  parser.add_argument('--lines', action='store_true', help='Break content into lines (default).')
   args = parser.parse_args()
 
   # Are we updating or creating? 
 
   if (args.ingest):
     delimiter = '\n'
-    #if (args.sentences):
-      #delimiter = '.'
+    if (args.sentences):
+      delimiter = '.'
     if (args.database):
       (d, delimiter) = connectToWrite(args.database[0], delimiter)
     else:
@@ -99,10 +100,10 @@ def main():
     if (args.database):
       (d, delimiter) = connectToRead(args.database[0])
     else:
-      d, delimiterd = connectToRead('lousymimic.db') 
+      (d, delimiter) = connectToRead('lousymimic.db') 
     n = 5
     if (args.number): n = int(args.number[0])
-    express(d, n)
+    express(d, n, delimiter)
   
   else:
     print "No action requested."
