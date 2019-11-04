@@ -45,8 +45,8 @@ def ingest(fp_in, dict_out, delimiter="\n"):
   blocks = content.split(delimiter)
   
   # Dictionary structure is:
-  # dict_out = {'word': ['next word', 'next word', ...]} 
-  # Special condition: delimiter is treated as a word 
+  # dict_out = {'word': ['next word', 'next word', ...]}
+  # Special condition: delimiter is treated as a word
 
   for b in blocks:
     ws = b.split()
@@ -54,18 +54,18 @@ def ingest(fp_in, dict_out, delimiter="\n"):
       dict_add(dict_out, delimiter, ws[0])
       
       ws.append(delimiter)
-      for wi in xrange(len(ws) - 1):
+      for wi in range(len(ws) - 1):
 	dict_add(dict_out, ws[wi], ws[wi + 1])
 
       
 def express(d, count=5, delimiter="\n"):
   """Generates text from an existing db."""
-  for i in xrange(count):
+  for _ in range(count):
     word = random.choice(cPickle.loads(d[delimiter]))
-    while (word <> delimiter):
-      print word,
+    while (word != delimiter):
+      print(word)
       word = random.choice(cPickle.loads(d[word]))
-    print delimiter,
+    print(delimiter)
 
 
 
@@ -83,7 +83,7 @@ def main():
   parser.add_argument('--lines', action='store_true', help='Break content into lines (default).')
   args = parser.parse_args()
 
-  # Are we updating or creating? 
+  # Are we updating or creating?
 
   if (args.ingest):
     delimiter = '\n'
@@ -92,7 +92,7 @@ def main():
     if (args.database):
       (d, delimiter) = connectToWrite(args.database[0], delimiter)
     else:
-      (d, delimiter) = connectToWrite('lousymimic.db', delimiter) 
+      (d, delimiter) = connectToWrite('lousymimic.db', delimiter)
     fp = open(args.source[0])
     ingest(fp, d, delimiter)
 
@@ -100,14 +100,13 @@ def main():
     if (args.database):
       (d, delimiter) = connectToRead(args.database[0])
     else:
-      (d, delimiter) = connectToRead('lousymimic.db') 
+      (d, delimiter) = connectToRead('lousymimic.db')
     n = 5
     if (args.number): n = int(args.number[0])
     express(d, n, delimiter)
-  
   else:
-    print "No action requested."
+    print("No action requested.")
 
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
   main()
