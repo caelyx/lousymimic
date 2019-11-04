@@ -57,7 +57,7 @@ def ingest(fp_in, dict_out, delimiter="\n"):
       for wi in range(len(ws) - 1):
 	dict_add(dict_out, ws[wi], ws[wi + 1])
 
-      
+
 def express(d, count=5, delimiter="\n"):
   """Generates text from an existing db."""
   for _ in range(count):
